@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace HydraCalc.Weapon
+﻿namespace HydraCalc.Weapon
 {
-    public class Weapon : IWeapon, IEquatable<Weapon>
+    public class Weapon : IWeapon
     {
         private IDamage DamageType { get; }
         private bool IsDivisor => DamageType.CutFactor != 1;
@@ -16,7 +14,7 @@ namespace HydraCalc.Weapon
         {
             if (!IsDivisor) return DamageType.Cut;
             if (amountOfHeads % DamageType.CutFactor == 0) return amountOfHeads - (amountOfHeads / DamageType.CutFactor);
-            return DamageType.Cut;
+            return DamageType.Cut; // Is 0 for Divisors
         }
 
         private int GetGrowth(int amountOfHeads) =>
@@ -26,28 +24,10 @@ namespace HydraCalc.Weapon
         {
             var cut = GetCut(amountOfHeads);
 
-            if (cut > amountOfHeads || cut == 0) return 0;
-            if (amountOfHeads == cut) return cut;
+            if (cut > amountOfHeads || cut == 0) return 0; // Signal that hitting the Hydra is impossible
+            if (amountOfHeads == cut) return cut; // Signal that Hydra can be killed
 
             return cut - GetGrowth(amountOfHeads);
         }
-
-        public bool Equals(Weapon other)
-        {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(DamageType, other.DamageType);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null || obj.GetType() != GetType()) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return Equals((Weapon) obj);
-        }
-
-        public override int GetHashCode() => DamageType?.GetHashCode() ?? 0;
-        public static bool operator ==(Weapon left, Weapon right) => Equals(left, right);
-        public static bool operator !=(Weapon left, Weapon right) => !Equals(left, right);
     }
 }
