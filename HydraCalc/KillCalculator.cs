@@ -29,15 +29,15 @@ namespace HydraCalc
             if(amountOfHeads <= 0) throw new ArgumentOutOfRangeException(nameof(amountOfHeads), "Must be greater than 0");
 
             var root = new Node<Step>(null, new Step(null, amountOfHeads, 0));
-            return CalculateKillRecursive(weapons, root, new Queue<Node<Step>>())?.GetParents().Select(path => path.Weapon) ?? Enumerable.Empty<IWeapon>();
+            return CalculateKillRecursive(weapons, root, new Queue<Node<Step>>());
         }
 
-        private Node<Step> CalculateKillRecursive(IEnumerable<IWeapon> weaponSet, Node<Step> currentStep, Queue<Node<Step>> stepsToProcess)
+        private IEnumerable<IWeapon> CalculateKillRecursive(IEnumerable<IWeapon> weaponSet, Node<Step> currentStep, Queue<Node<Step>> stepsToProcess)
         {
             var amountOfHeads = currentStep.Value.AmountOfHeads;
             var numberOfStep = currentStep.Value.NumberOfStep;
 
-            if(numberOfStep >= MaxAmountOfSteps) return null;
+            if(numberOfStep >= MaxAmountOfSteps) return Enumerable.Empty<IWeapon>();
 
             foreach (var weapon in weaponSet)
             {
@@ -47,7 +47,7 @@ namespace HydraCalc
 
             foreach (var childStep in currentStep)
             {
-                if (childStep.Value.AmountOfHeads == 0) return childStep;
+                if (childStep.Value.AmountOfHeads == 0) return childStep.GetParents().Select(step => step.Weapon);
                 stepsToProcess.Enqueue(childStep);
             }
 
@@ -56,7 +56,7 @@ namespace HydraCalc
                 return CalculateKillRecursive(weaponSet, stepsToProcess.Dequeue(), stepsToProcess);
             }
 
-            return null;
+            return Enumerable.Empty<IWeapon>();
         }
     }
 }
