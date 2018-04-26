@@ -14,7 +14,7 @@
         {
             if (!IsDivisor) return DamageType.Cut;
             if (amountOfHeads % DamageType.CutFactor == 0) return amountOfHeads - (amountOfHeads / DamageType.CutFactor);
-            return DamageType.Cut; // Is 0 for Divisors
+            return 0;
         }
 
         private int GetGrowth(int amountOfHeads) =>
