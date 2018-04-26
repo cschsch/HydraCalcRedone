@@ -197,5 +197,20 @@ namespace HydraCalcTests
             // assert
             CollectionAssert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        public void CalculateKill_OneWeapon_ManySteps()
+        {
+            // arrange
+            var weapons = new[] {new Weapon(Damage.NormalCutNormalGrowth(5, 0))};
+            var expected = Enumerable.Repeat(weapons[0], 50).ToArray();
+            var calculator = new KillCalculator(60);
+
+            // act
+            var result = calculator.CalculateKill(weapons, 250).ToArray();
+
+            // assert
+            CollectionAssert.AreEqual(expected, result);
+        }
     }
 }
