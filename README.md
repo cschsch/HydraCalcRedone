@@ -31,7 +31,7 @@ Easy to use library of HydraCalc written in C#. Now supports a greater amount of
   
   - "maxAmountOfSteps" is the maximum depth the calculation will go
     
-    - Due to the nature of the algorithm high values are entirely experimental. 
+    - Due to the nature of the algorithm high values are entirely experimental
   
 - Call CalculateKill:
 
