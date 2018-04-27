@@ -7,29 +7,31 @@ Easy to use library of HydraCalc written in C#. Now supports a greater amount of
 
   `var weapon = new Weapon(IDamage damageType)`
 
-- Possible DamageTypes:
+  - Possible DamageTypes:
 
-  `Damage.NormalCutNormalGrowth(int cut, int growth)` 
+    `Damage.NormalCutNormalGrowth(int cut, int growth)` 
   
-  - Weapon cuts "cut" heads; "growth" heads grow back
+    - Weapon cuts "cut" heads; "growth" heads grow back
   
-  `Damage.NormalCutDoubleGrowth(int cut)` 
+    `Damage.NormalCutDoubleGrowth(int cut)` 
   
-  - Weapon cuts "cut" heads; double the heads grow back
+    - Weapon cuts "cut" heads; double the heads grow back
   
-  `Damage.DivisorNormalGrowth(int cutFactor, int growth)` 
+    `Damage.DivisorNormalGrowth(int cutFactor, int growth)` 
   
-  - Weapon divides heads by "cutFactor"; "growth" heads grow back
+    - Weapon divides heads by "cutFactor"; "growth" heads grow back
   
-  `Damage.DivisorDoubleGrowth(int cutFactor)`
+    `Damage.DivisorDoubleGrowth(int cutFactor)`
   
-  - Weapon divides heads by "cutFactor"; double the heads grow back
+    - Weapon divides heads by "cutFactor"; double the heads grow back
   
 - Create KillCalculator:
 
   `var calculator = new KillCalculator(int maxAmountOfSteps)`
   
   - "maxAmountOfSteps" is the maximum depth the calculation will go
+    
+    - Due to the nature of the algorithm high values are entirely experimental. 
   
 - Call CalculateKill:
 
