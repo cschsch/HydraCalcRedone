@@ -28,12 +28,15 @@ namespace HydraCalc
             if(!weapons.Any()) throw new ArgumentException("Cannot be empty", nameof(weapons));
             if(amountOfHeads <= 0) throw new ArgumentOutOfRangeException(nameof(amountOfHeads), "Must be greater than 0");
 
+            var stepsToProcess = new Queue<Node<Step>>();
             var root = new Node<Step>(null, new Step(null, amountOfHeads, 0));
-            return CalculateKillRecursive(weapons, root, new Queue<Node<Step>>());
+            stepsToProcess.Enqueue(root);
+            return CalculateKillRecursive(weapons, stepsToProcess, new HashSet<int> {amountOfHeads});
         }
 
-        private IEnumerable<IWeapon> CalculateKillRecursive(IEnumerable<IWeapon> weaponSet, Node<Step> currentStep, Queue<Node<Step>> stepsToProcess)
+        private IEnumerable<IWeapon> CalculateKillRecursive(IEnumerable<IWeapon> weaponSet, Queue<Node<Step>> stepsToProcess, ISet<int> uniqueSteps)
         {
+            var currentStep = stepsToProcess.Dequeue();
             var amountOfHeads = currentStep.Value.AmountOfHeads;
             var numberOfStep = currentStep.Value.NumberOfStep;
 
@@ -42,7 +45,8 @@ namespace HydraCalc
             foreach (var weapon in weaponSet)
             {
                 var cutAmount = weapon.GetHitDifference(amountOfHeads);
-                if(cutAmount != 0) currentStep.AddChild(currentStep, new Step(weapon, amountOfHeads - cutAmount, numberOfStep + 1));
+                var nextHeads = amountOfHeads - cutAmount;
+                if (cutAmount != 0 && uniqueSteps.Add(nextHeads)) currentStep.AddChild(currentStep, new Step(weapon, nextHeads, numberOfStep + 1));
             }
 
             foreach (var childStep in currentStep)
@@ -53,7 +57,7 @@ namespace HydraCalc
 
             foreach (var _ in stepsToProcess)
             {
-                return CalculateKillRecursive(weaponSet, stepsToProcess.Dequeue(), stepsToProcess);
+                return CalculateKillRecursive(weaponSet, stepsToProcess, uniqueSteps);
             }
 
             return Enumerable.Empty<IWeapon>();
