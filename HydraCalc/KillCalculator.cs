@@ -46,7 +46,7 @@ namespace HydraCalc
             {
                 var cutAmount = weapon.GetHitDifference(amountOfHeads);
                 var nextHeads = amountOfHeads - cutAmount;
-                if (cutAmount != 0 && uniqueSteps.Add(nextHeads)) currentStep.AddChild(currentStep, new Step(weapon, nextHeads, numberOfStep + 1));
+                if (uniqueSteps.Add(nextHeads)) currentStep.AddChild(currentStep, new Step(weapon, nextHeads, numberOfStep + 1));
             }
 
             foreach (var childStep in currentStep)
